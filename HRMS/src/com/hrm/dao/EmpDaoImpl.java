@@ -8,13 +8,13 @@ import com.hrm.bean.Employee;
 import com.hrm.exceptions.EmpException;
 import com.hrm.util.DBConnect;
 
-public class EmpImpl implements Emp {
+public class EmpDaoImpl implements EmpDao {
 
 	@Override
 	public void registerEmp(Employee emp) throws EmpException {
 		
 		try(Connection con = DBConnect.start()){
-			PreparedStatement ps = con.prepareStatement("insert into Employee values(?,?,?,?,?,?,?,?,?)");
+			PreparedStatement ps = con.prepareStatement("insert into Employee values(?,?,?,?,?,?,?,?)");
 			
 			ps.setInt(1, emp.getEmpId());
 			ps.setString(2,emp.getEmpName());
@@ -24,7 +24,6 @@ public class EmpImpl implements Emp {
 			ps.setString(6, emp.getEmpPassword());
 			ps.setInt(7, emp.getLeavesAvl());
 			ps.setString(8, emp.getUserName());
-			ps.setBoolean(9, emp.isAdmin());
 			
 			int rows = ps.executeUpdate();
 			
@@ -36,6 +35,31 @@ public class EmpImpl implements Emp {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			
+		}
+		
+	}
+
+	@Override
+	public void Transfer(int empId, int Dept) throws EmpException {
+		
+		try(Connection con = DBConnect.start()){
+			
+			PreparedStatement ps = con.prepareStatement("update Employee set EmpDeptId = ? where EmpId = ?");
+			
+			ps.setInt(1, Dept);
+			ps.setInt(2,empId);
+			
+			int rows = ps.executeUpdate();
+			
+			if(rows > 0) {
+				
+				System.out.println("Transfer was successfull and rows affected" + rows);
+			}else {
+				throw new EmpException("Transfer was unsuccesful");
+			}
+			
+		}catch(SQLException se) {
 			
 		}
 		

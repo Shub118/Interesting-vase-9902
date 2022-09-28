@@ -9,12 +9,11 @@ public class Employee {
 	 private String EmpPassword; 
 	 private int LeavesAvl;
 	 private String UserName;   
-	  private boolean isAdmin;
 	  
 	  
 	  
 	public Employee(int empId, String empName, String empRole, int empSalary, int empDeptId, String empPassword,
-			int leavesAvl, String userName, boolean isAdmin) {
+			int leavesAvl, String userName) {
 		super();
 		EmpId = empId;
 		EmpName = empName;
@@ -24,7 +23,6 @@ public class Employee {
 		EmpPassword = empPassword;
 		LeavesAvl = leavesAvl;
 		UserName = userName;
-		this.isAdmin = isAdmin;
 	}
 	
 	public Employee() {
@@ -79,12 +77,6 @@ public class Employee {
 	public void setUserName(String userName) {
 		UserName = userName;
 	}
-	public boolean isAdmin() {
-		return isAdmin;
-	}
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
-	  
+	
 	  
 }

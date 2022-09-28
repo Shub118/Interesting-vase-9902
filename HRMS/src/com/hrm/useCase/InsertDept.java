@@ -5,7 +5,7 @@ import java.util.Scanner;
 import com.hrm.bean.Department;
 import com.hrm.dao.DeptDaoImpl;
 
-public class useInsertDept {
+public class InsertDept {
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
