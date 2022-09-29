@@ -1,18 +1,19 @@
 package com.hrm.useCase;
 
+import com.hrm.dao.DeptDao;
 import com.hrm.dao.DeptDaoImpl;
 import com.hrm.exceptions.DeptException;
 
-public class InsertDept {
+public class getAllDept {
 
 	public static void main(String[] args) {
-				
-		DeptDaoImpl deptDao = new DeptDaoImpl();
-
+		DeptDao dptDao = new DeptDaoImpl();
+		
 		try {
-			deptDao.insertDept();
+			dptDao.getAllDept();
 		} catch (DeptException e) {
-			e.getMessage();
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}

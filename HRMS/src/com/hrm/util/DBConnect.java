@@ -19,7 +19,6 @@ public class DBConnect {
 		try {
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hrms","root","9879534017sh");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

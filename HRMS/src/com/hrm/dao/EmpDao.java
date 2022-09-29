@@ -8,4 +8,5 @@ public interface EmpDao {
 	
 	void Transfer(int empId, int Dept) throws EmpException;
 	
+	
 }

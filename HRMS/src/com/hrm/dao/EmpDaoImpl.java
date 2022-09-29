@@ -3,6 +3,7 @@ package com.hrm.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 import com.hrm.bean.Employee;
 import com.hrm.exceptions.EmpException;
@@ -35,7 +36,8 @@ public class EmpDaoImpl implements EmpDao {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 		
 	}
@@ -64,5 +66,7 @@ public class EmpDaoImpl implements EmpDao {
 		}
 		
 	}
+
+
 
 }
