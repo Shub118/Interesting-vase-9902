@@ -97,7 +97,7 @@ public class DeptDaoImpl implements DeptDao{
 	public void getAllDept() throws DeptException {
 		try(Connection con = DBConnect.start()){
 			ResultSet rs = con.prepareStatement("select * from Department").executeQuery();
-			if(rs.isBeforeFirst()) throw new DeptException("No Department in Database");
+			if(!rs.isBeforeFirst()) throw new DeptException("No Department in Database");
 			while(rs.next()) {
 				System.out.println("| Department Id is "+rs.getInt("DeptId"));
 				System.out.println("| Department Name is "+rs.getString("DeptName"));
