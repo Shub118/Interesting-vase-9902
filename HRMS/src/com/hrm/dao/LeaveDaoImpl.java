@@ -173,8 +173,6 @@ public class LeaveDaoImpl implements LeaveDao {
 			}
 			
 		}catch(SQLException se) {
-			se.printStackTrace();
-		}catch(Exception e){
 			throw new EmpException("Something went wrong try again");
 		}
 		

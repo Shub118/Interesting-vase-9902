@@ -25,14 +25,14 @@ public class AdminAcc {
 			if(rs.next()){
 				String lname = rs.getString("username");
 				System.out.println("welcome "+lname);
-				
+				System.out.println();
 				System.out.println("Please select the operation\r\n"+ " 1. Add new employee .\r\n"
-						+ "  2. Add new department\r\n"
-						+ "  3. update department\r\n"
-						+ "  4. Transfer Employee\r\n"
-						+ "  5. show all departments\r\n"
-						+ "  6.  Review Leave applications\r\n"
-						+ "  7.Update Employee's Profile");
+						+ " 2. Add new department\r\n"
+						+ " 3. update department\r\n"
+						+ " 4. Transfer Employee\r\n"
+						+ " 5. show all departments\r\n"
+						+ " 6.  Review Leave applications\r\n"
+						+ " 7.Update Employee's Profile");
 				
 				int opt = sc.nextInt();
 				
@@ -103,8 +103,7 @@ public class AdminAcc {
 					try {
 						edao.Transfer(tid, deptNo);
 					} catch (EmpException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println(e.getMessage());
 					} 
 					break;
 				case 5:
@@ -113,8 +112,7 @@ public class AdminAcc {
 					try {
 						dptDao.getAllDept();
 					} catch (DeptException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println(e.getMessage());
 					}
 					break;
 				case 6:
@@ -123,16 +121,14 @@ public class AdminAcc {
 					try {
 						Ld.LeaveApproval();
 					} catch (EmpException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println(e.getMessage());
 					}
 					break;
 				case 7:
 					try {
 						new EmpDaoImpl().updateEmpByAdm();
 					} catch (EmpException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println(e.getMessage());
 					}
 					break;
 				default:
