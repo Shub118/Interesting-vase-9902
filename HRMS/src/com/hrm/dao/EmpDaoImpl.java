@@ -36,9 +36,7 @@ public class EmpDaoImpl implements EmpDao {
 			}
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}catch(Exception e){
-			e.printStackTrace();
+			throw new EmpException("Wrong Querry");
 		}
 		
 	}
@@ -63,53 +61,39 @@ public class EmpDaoImpl implements EmpDao {
 			}
 			
 		}catch(SQLException se) {
-			
+			throw new EmpException("Connection Error");
 		}
 		
 	}
 
 	@Override
-	public void viewProfl() throws EmpException {
+	public void viewProfl(Employee emp)  {
+				
+    			System.out.println("| Employee id is "+emp.getEmpId());
+				System.out.println("| Employee Name is "+emp.getEmpName());
+				System.out.println("| Employee role is "+emp.getEmpRole());
+				System.out.println("| Employee Salary is "+emp.getEmpSalary());
+				System.out.println("| Employee Username is "+emp.getUserName());
+				System.out.println("| Employee Available leaves are "+emp.getLeavesAvl());
+				System.out.println("======================================================");
+	}
+	
+
+	@Override
+	public void updateEmp(Employee emp) throws EmpException {
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.println("Enter Employee id");
-		int id = sc.nextInt();
-		
-		try(Connection con = DBConnect.start()){
-			ResultSet rs = con.prepareStatement("select * from Employee where EmpId = "+id).executeQuery();
-			
-			if(rs.next()) {
-				System.out.println("Employee id is "+rs.getInt("EmpId"));
-				System.out.println(" Employee Name is "+rs.getString("EmpName"));
-				System.out.println(" Employee role is "+rs.getString("EmpRole"));
-				System.out.println(" Employee Salary is "+rs.getString("EmpSalary"));
-				System.out.println(" Employee Username is "+rs.getString("UserName"));
-				System.out.println(" Employee Available leaves are "+rs.getString("LeavesAvl"));
-				
-			}else {
-				throw new EmpException("Invalid Id");
-			}
-			
-		}catch(SQLException se) {
-			se.printStackTrace();
-		}
-	}
-
-	@Override
-	public void updateEmp() throws EmpException {
-	Scanner sc = new Scanner(System.in);
-		System.out.println("Enter Employee id");
-		int id = sc.nextInt();
 		
 		try(Connection con = DBConnect.start()){
 			System.out.println("What do you wnat to change \r\n"+"1. Name 2. Password 3. Username");
+			System.out.println("======================================================");
 			int ans = sc.nextInt();
 			int row = 0;
 			if(ans == 1) {
 				System.out.println("Enter Name");
 				String name = sc.next();
 				
-				PreparedStatement ps = con.prepareStatement(" update Employee set EmpName = ? where EmpId = "+id);
+				PreparedStatement ps = con.prepareStatement(" update Employee set EmpName = ? where EmpId = "+emp.getEmpId());
 				ps.setString(1, name);
 				row = ps.executeUpdate();
 				
@@ -118,7 +102,7 @@ public class EmpDaoImpl implements EmpDao {
 				System.out.println("Enter password");
 				String pass = sc.next();
 				
-				PreparedStatement ps = con.prepareStatement(" update Employee set EmpPassword = ? where EmpId = "+id);
+				PreparedStatement ps = con.prepareStatement(" update Employee set EmpPassword = ? where EmpId = "+ emp.getEmpId());
 				ps.setString(1, pass);
 				row = ps.executeUpdate();
 				
@@ -126,7 +110,7 @@ public class EmpDaoImpl implements EmpDao {
 				System.out.println("Enter Username");
 				String usrnm = sc.next();
 				
-				PreparedStatement ps = con.prepareStatement(" update Employee set userName = ? where EmpId = "+id);
+				PreparedStatement ps = con.prepareStatement(" update Employee set userName = ? where EmpId = "+emp.getEmpId());
 				ps.setString(1, usrnm);
 				row = ps.executeUpdate();
 				
@@ -142,7 +126,7 @@ public class EmpDaoImpl implements EmpDao {
 			
 			
 		}catch(SQLException se) {
-			se.printStackTrace();
+			throw new EmpException("Wrong Querry");
 		}
 		
 	}
@@ -226,7 +210,7 @@ public class EmpDaoImpl implements EmpDao {
 			}
 			
 		}catch(SQLException se) {
-			se.printStackTrace();
+			throw new EmpException("Wrong Querry");
 		}
 	}
 

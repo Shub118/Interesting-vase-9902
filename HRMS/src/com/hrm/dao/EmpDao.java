@@ -8,9 +8,9 @@ public interface EmpDao {
 	
 	void Transfer(int empId, int Dept) throws EmpException;
 	
-	void viewProfl() throws EmpException;
-	
-	void updateEmp() throws EmpException;
+	void updateEmp(Employee emp) throws EmpException;
 	
 	void updateEmpByAdm() throws EmpException;
+
+	void viewProfl(Employee emp) ;
 }

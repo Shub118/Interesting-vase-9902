@@ -3,24 +3,26 @@ package com.hrm;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import com.hrm.bean.Employee;
 import com.hrm.dao.EmpDaoImpl;
 import com.hrm.dao.LeaveDao;
 import com.hrm.dao.LeaveDaoImpl;
 import com.hrm.exceptions.EmpException;
 import com.hrm.util.DBConnect;
 
-public class Employee {
-	public static void Start(String id, String password) {
+public class EmployeeAcc {
+	public static void Start(String id, String password) throws EmpException {
 		Scanner sc = new Scanner(System.in);
 	
 		try(Connection con = DBConnect.start()){
 			ResultSet rs = con.prepareStatement("select * from Employee where userName = '"+id+"' AND EmpPassword = '"+password+"'").executeQuery();
 			if(rs.next()){
-				String name = rs.getString("EmpName");
-				System.out.println("welcome "+name);
-				
+				Employee emp = new Employee(rs.getInt("EmpId"), rs.getString("EmpName"),rs.getString("EmpRole"),rs.getInt("EmpSalary"),rs.getInt("EmpDeptId"), rs.getString("EmpPassword"), rs.getInt("LeavesAvl"), rs.getString("userName"));
+				System.out.println("welcome "+ emp.getEmpName());
+//				 EmpId | EmpName | EmpRole    | EmpSalary | EmpDeptId | EmpPassword | LeavesAvl | userName
 				System.out.println("Please select the operation\r\n" +" 1. view profile\r\n"
 						+ "  2. Update profile\r\n"
 						+ "  3. Apply Leave");
@@ -29,40 +31,36 @@ public class Employee {
 				
 				switch(opt) {
 				case 1 : 
-					try {
-						new EmpDaoImpl().viewProfl();
-					} catch (EmpException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						e.getMessage();
-					} 
+					new EmpDaoImpl().viewProfl(emp); 
 					break;
+					
 				case 2 :
 					 try {
-							new EmpDaoImpl().updateEmp();
+							new EmpDaoImpl().updateEmp(emp);
 						} catch (EmpException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							System.out.println(e.getMessage());
 						};
 					break;
 				case 3:
 					LeaveDao emdao = new LeaveDaoImpl();
 					
 					try {
-						emdao.ApplyLeave();
+						emdao.ApplyLeave(emp);
 					} catch (EmpException e) {
 						// TODO Auto-generated catch block
-						e.getMessage();
+						System.out.println(e.getMessage());
 					}
 					break;
 				default:
 				}
 			}else {
-				System.out.println("Please Enter correct Username and Password");
+				throw new EmpException("No Matching Profile Found");
 			}
 			
-		}catch(SQLException se){
-			se.printStackTrace();
+		}catch(InputMismatchException se){
+			throw new EmpException("Please Enter correct Input login again to continue");
+		} catch (SQLException e1) {
+			throw new EmpException(e1.getMessage());
 		}
 	}
 	

@@ -9,15 +9,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import com.hrm.bean.Employee;
 import com.hrm.exceptions.EmpException;
 import com.hrm.util.DBConnect;
 
 public class LeaveDaoImpl implements LeaveDao {
 	@Override
-	public void ApplyLeave() throws EmpException {
+	public void ApplyLeave(Employee emp) throws EmpException {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Enter your Employee Id");
-		int id = sc.nextInt();
 		
 		System.out.println("Enter Leave Start date in YYYY-MM-DD format");
 		String start = sc.next();
@@ -31,7 +30,7 @@ public class LeaveDaoImpl implements LeaveDao {
 		try(Connection con = DBConnect.start()){
 			PreparedStatement ps = con.prepareStatement("insert into Leaves values(?,?,?,?,?)");
 			
-			ps.setInt(1,id);
+			ps.setInt(1,emp.getEmpId());
 			ps.setString(2,start);
 			ps.setString(3, End);
 			ps.setString(4, nature);
@@ -47,10 +46,11 @@ public class LeaveDaoImpl implements LeaveDao {
 		}catch(SQLException se) {
 			se.printStackTrace();
 		}
-		
-		
+	
 	}
 
+	
+	
 	@Override
 	public void LeaveApproval() throws EmpException {
 		Scanner sc = new Scanner(System.in);
@@ -70,7 +70,7 @@ public class LeaveDaoImpl implements LeaveDao {
 				detailArr.add(detail);
 			}
 			
-			System.out.println("Select one option \r\n "+"1. Review all ap[plications \r\n"+"2.Review latest 5 Application \r\n"+"3.Review application based on Employee id");
+			System.out.println("Select one option \r\n "+"1. Review all applications \r\n"+"2.Review latest 5 Application \r\n"+"3.Review application based on Employee id");
 			int option = sc.nextInt();
 			
 			if(option == 1) {
@@ -81,22 +81,22 @@ public class LeaveDaoImpl implements LeaveDao {
 					System.out.println("Employee need days of Leaves are " +s[3]);
 					System.out.println("The nature of Leave is " +s[4]);
 					System.out.println();
-					System.out.println("Select options \r\n"+"1. Accept \r\n"+"2. Reject \r\n"+"any key for Pending");
-					int ans = sc.nextInt();
+					System.out.println("Select options \r\n"+"1. Accept \r\n"+"2. Reject \r\n"+"3. Pending");
+					int ans = Integer.parseInt(sc.next());
 					 PreparedStatement ps1 = con.prepareStatement("update Leaves set status = ? where EmpId ="+Integer.parseInt(s[0]));
-					if(ans == 1) {
+					int rows = 0;
+					 if(ans == 1) {
 						 ps1.setString(1, "Accepted");
-						 int rows = ps1.executeUpdate();
-						 if(rows<1) {
-							 throw new EmpException("Something went wrong ");
-						 }
+						  rows = ps1.executeUpdate();
+						
 					}else if(ans == 2) {
 						ps1.setString(1, "Rejected");
-						int rows = ps1.executeUpdate();
-						if(rows<1) {
+						 rows = ps1.executeUpdate();
+						
+					}
+					 if(rows<1) {
 							throw new EmpException("Something went wrong ");
 						}
-					}
 				}
 			}
 			
@@ -174,6 +174,8 @@ public class LeaveDaoImpl implements LeaveDao {
 			
 		}catch(SQLException se) {
 			se.printStackTrace();
+		}catch(Exception e){
+			throw new EmpException("Something went wrong try again");
 		}
 		
 	}

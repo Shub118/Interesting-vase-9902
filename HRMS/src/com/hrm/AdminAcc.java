@@ -3,6 +3,7 @@ package com.hrm;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.hrm.bean.Employee;
@@ -15,8 +16,8 @@ import com.hrm.exceptions.DeptException;
 import com.hrm.exceptions.EmpException;
 import com.hrm.util.DBConnect;
 
-public class Admin {
-	public static void Start(String lid, String password) {
+public class AdminAcc {
+	public static void Start(String lid, String password) throws DeptException {
 		Scanner sc = new Scanner(System.in);
 		
 		try(Connection con = DBConnect.start()){
@@ -141,11 +142,13 @@ public class Admin {
 				
 				
 			}else {
-				System.out.println("Please Enter correct Username and Password");
+				throw new DeptException("No Matching Profile Found");
 			}
 			
-		}catch(SQLException se){
-			
+		}catch(InputMismatchException se){
+			throw new DeptException("Please Enter correct Input login again to continue");
+		} catch (SQLException e1) {
+			throw new DeptException(e1.getMessage());
 		}
 	}
 
